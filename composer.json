@@ -1,0 +1,15 @@
+{
+    "name": "jeremias/stock_repuestos_zoom",
+    "autoload": {
+        "psr-4": {
+            "Jeremias\\StockRepuestosZoom\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Gonzalez Jeremias",
+            "email": "jeregonza194@gmail.com"
+        }
+    ],
+    "require": {}
+}
