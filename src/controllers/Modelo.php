@@ -37,7 +37,7 @@ class Modelo
 
     public function listarModelos(string $modelo = ''){
 
-        if ($modelo == '') {
+        if ($modelo != '') {
             $sql = "SELECT id_mod, modelo FROM modelo WHERE modelo LIKE :modelo";
             $stmt = $this->con->con()->prepare($sql);
             $stmt->execute([':modelo' => '%' . $modelo . '%']);

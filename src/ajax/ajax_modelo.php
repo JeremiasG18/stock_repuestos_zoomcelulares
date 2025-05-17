@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if ($_POST['buscar'] == 'modelo'){
-        $vModelo = !empty($_POST['guardar']) ? $_POST['guardar'] : '';
+        $vModelo = !empty($_POST['modelo']) ? $_POST['modelo'] : '';
         $rst = $modelo->listarModelos($vModelo);
         echo json_encode($rst);
         exit;

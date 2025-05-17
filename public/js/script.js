@@ -32,6 +32,9 @@ function mostrarModelos(modelo){
     contenedorModelo.innerHTML = '';
     const url = 'http://localhost/stock_repuestos_zoomcelulares/src/ajax/ajax_modelo.php';
     const body = new FormData();
+    // if (modelo != '') {
+    //     body.append('')
+    // }
     body.append(
         'buscar', 'modelo'
     );
@@ -79,7 +82,7 @@ function mostrarModelos(modelo){
     
 // }
 
-const formulario = document.querySelectorAll('form');
+const formulario = document.querySelectorAll('.form');
 formulario.forEach((form) =>{
     form.addEventListener('submit', (e) =>{
         e.preventDefault();
@@ -113,6 +116,25 @@ formulario.forEach((form) =>{
     })
 });
 
+const buscador = document.querySelectorAll('.formSearch');
+buscador.forEach(buscar =>{
+    buscar.addEventListener('submit', (e)=>{
+        e.preventDefault();
+        const formData = new FormData(buscar);
+        fetch(buscar.action, {
+            method: buscar.method,
+            body: formData
+        })
+        .then(respuesta => respuesta.json())
+        .then(data => {
+            showDataSearch(data);
+        })
+        .catch(error =>{
+            console.error('Hubo un error del servidor: ' + error); 
+        });
+    });
+});
+
 
 if (window.location.href == 'http://localhost/stock_repuestos_zoomcelulares/?view=marcas') {
     mostrarMarcas();
@@ -120,4 +142,15 @@ if (window.location.href == 'http://localhost/stock_repuestos_zoomcelulares/?vie
 
 if (window.location.href == 'http://localhost/stock_repuestos_zoomcelulares/?view=modelos') {
     mostrarModelos();
+}
+
+function showDataSearch(data){
+    const contenedorModelo = document.querySelector('.contenedorModelos');
+    contenedorModelo.innerHTML = '';    
+    for (let i = 0; i < data.length; i++) {
+        const p = document.createElement('p');
+        p.textContent = data[i].modelo;
+        contenedorModelo.appendChild(p);   
+    }
+    return contenedorModelo;
 }
