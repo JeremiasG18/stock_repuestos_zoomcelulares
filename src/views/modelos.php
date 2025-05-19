@@ -18,7 +18,7 @@
             <input type="text" name="modelo" placeholder="Ingrese el modelo de la marca" id="modelo">
             <input type="submit" value="Buscar Modelo">
         </form>
-        <div class="contenedorModelos">
+        <div class="contenedor">
      
         </div>
     </section>

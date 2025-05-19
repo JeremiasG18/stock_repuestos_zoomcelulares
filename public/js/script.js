@@ -1,42 +1,32 @@
-function mostrarMarcas(){
-    const contenedorMarcas = document.querySelector('.contenedorMarcas');
+function mostrarDatos(data){
+    const contenedor = document.querySelector('.contenedor');
+    contenedor.innerHTML = '';    
+    for (let i = 0; i < data.length; i++) {
+        const div = document.createElement('div');
+        const p = document.createElement('p');
+        const b = document.createElement('b');
+        for (let key in data[i]) {
+            if (key !== '0' && key !== '1') {
+                if (key.includes('id')){
+                    p.setAttribute('data-id', data[i][key]);
+                }
 
-    const url = 'http://localhost/stock_repuestos_zoomcelulares/src/ajax/ajax_marca.php';
-    const method = 'POST';
-    const body = {
-        buscar: 'marca'
-    };
-
-    fetch(url,{
-        method: method,
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body)
-    })
-    .then(response => response.json())
-    .then(data => {
-        contenedorMarcas.innerHTML = '';
-        for (let i = 0; i < data.length; i++) {
-            const p = document.createElement('p');
-            p.textContent = data[i].marca;
-            contenedorMarcas.appendChild(p);
+                b.innerText = `${key}: `;
+                p.appendChild(b);
+                p.innerText = data[i][key];
+            }
+            div.appendChild(p);
         }
-    });
-    return contenedorMarcas;
+        contenedor.appendChild(div);
+    }
 
+    return contenedor;
 }
 
-function mostrarModelos(modelo){
-    const contenedorModelo = document.querySelector('.contenedorModelos');
-    contenedorModelo.innerHTML = '';
-    const url = 'http://localhost/stock_repuestos_zoomcelulares/src/ajax/ajax_modelo.php';
+function listar(url, binfo, funcion){
     const body = new FormData();
-    // if (modelo != '') {
-    //     body.append('')
-    // }
     body.append(
-        'buscar', 'modelo'
+        binfo.accion, binfo.clase
     );
     fetch(url, {
         method: 'POST',
@@ -44,43 +34,9 @@ function mostrarModelos(modelo){
     })
     .then(respuesta => respuesta.json())
     .then(data => {
-        for (let i = 0; i < data.length; i++) {
-            const p = document.createElement('p');
-            p.textContent = data[i].modelo;
-            contenedorModelo.appendChild(p);   
-        }
+        funcion(data);
     })
-    return contenedorModelo;
 }
-
-// function selectMarcas(){
-
-//     const selectMarcas = document.querySelector('#marcas');
-
-//     const url = 'http://localhost/stock_repuestos_zoomcelulares/src/ajax/ajax_marca.php';
-//     const body = {
-//         buscar: 'marca'
-//     };
-//     fetch(url, {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify(body)
-//     })
-//     .then(respuesta => respuesta.json())
-//     .then(datos => {
-//         for (let i = 0; i < datos.length; i++) {
-//             const option = document.createElement('option');
-//             option.value = datos[i].id_mar;
-//             option.textContent = datos[i].marca;
-//             selectMarcas.appendChild(option);
-//         }
-//     })
-
-//     return selectMarcas;
-    
-// }
 
 const formulario = document.querySelectorAll('.form');
 formulario.forEach((form) =>{
@@ -90,7 +46,6 @@ formulario.forEach((form) =>{
         const formData = new FormData(form);
         const url = form.action;
         const method = form.method;
-        
         fetch(url,{
             method: method,
             body: formData
@@ -117,17 +72,17 @@ formulario.forEach((form) =>{
 });
 
 const buscador = document.querySelectorAll('.formSearch');
-buscador.forEach(buscar =>{
-    buscar.addEventListener('submit', (e)=>{
+buscador.forEach(fmBuscador =>{
+    fmBuscador.addEventListener('submit', (e)=>{
         e.preventDefault();
-        const formData = new FormData(buscar);
-        fetch(buscar.action, {
-            method: buscar.method,
+        const formData = new FormData(fmBuscador);
+        fetch(fmBuscador.action, {
+            method: fmBuscador.method,
             body: formData
         })
         .then(respuesta => respuesta.json())
         .then(data => {
-            showDataSearch(data);
+            mostrarDatos(data);
         })
         .catch(error =>{
             console.error('Hubo un error del servidor: ' + error); 
@@ -137,20 +92,19 @@ buscador.forEach(buscar =>{
 
 
 if (window.location.href == 'http://localhost/stock_repuestos_zoomcelulares/?view=marcas') {
-    mostrarMarcas();
+    const url = 'http://localhost/stock_repuestos_zoomcelulares/src/ajax/ajax_marca.php';
+    const binfo = {
+        accion: 'buscar',
+        clase: 'marca'
+    }
+    listar(url, binfo, mostrarDatos)
 }
 
 if (window.location.href == 'http://localhost/stock_repuestos_zoomcelulares/?view=modelos') {
-    mostrarModelos();
-}
-
-function showDataSearch(data){
-    const contenedorModelo = document.querySelector('.contenedorModelos');
-    contenedorModelo.innerHTML = '';    
-    for (let i = 0; i < data.length; i++) {
-        const p = document.createElement('p');
-        p.textContent = data[i].modelo;
-        contenedorModelo.appendChild(p);   
+    const url = 'http://localhost/stock_repuestos_zoomcelulares/src/ajax/ajax_modelo.php';
+    const binfo = {
+        accion: 'buscar',
+        clase: 'modelo'
     }
-    return contenedorModelo;
+    listar(url, binfo, mostrarDatos);
 }

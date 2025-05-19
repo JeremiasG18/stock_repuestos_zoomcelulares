@@ -34,7 +34,16 @@ class Marcas
         ];
     }
 
-    public function listarMarca(){
+    public function listarMarca(string $marca = ''){
+
+        if ($marca != '') {
+            $sql = "SELECT id_mar, marca FROM marca WHERE marca LIKE :marca";
+            $stmt = $this->con->con()->prepare($sql);
+            $stmt->execute([':marca' => '%' . $marca . '%']);
+            $rst = $stmt->fetchAll();
+            return $rst;
+        }
+
         $sql = "SELECT id_mar, marca FROM marca";
         $rst = $this->con->con()->query($sql)->fetchAll();
         return $rst;

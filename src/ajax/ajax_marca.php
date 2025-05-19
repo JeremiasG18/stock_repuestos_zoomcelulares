@@ -16,11 +16,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    $json = file_get_contents('php://input');
-    $_POST = json_decode($json, true);
     if (isset($_POST['buscar'])) {
         if ($_POST['buscar'] == 'marca'){
-            $rst = $marca->listarMarca();
+            $vMarca = !empty($_POST['marca']) ? $_POST['marca'] : '';
+            $rst = $marca->listarMarca($vMarca);
             echo json_encode($rst);
             exit;
         }
