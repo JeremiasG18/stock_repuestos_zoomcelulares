@@ -1,5 +1,8 @@
 <?php
 
+namespace Jeremias\StockRepuestosZoom\controllers;
+use Jeremias\StockRepuestosZoom\models\Main;
+
 class Modelo
 {
     private Main $con;
@@ -9,19 +12,21 @@ class Modelo
         $this->con = $con;
     }
 
-    public function guardarModelo(string $modelo = ''){
-        if ($modelo == '') {
+    public function guardarModelo(int $marca = 0,  string $modelo = ''){
+        if ($marca == '' || $modelo == '') {
             return [
                 'title' => 'error',
                 'message' => 'No se ha ingresado los datos en los campos obligatorios'
             ];
         }
 
-        $sql = "INSERT INTO modelo(modelo) VALUES (:modelo);";
+        $sql = "INSERT INTO modelo(id_mar, modelo) VALUES (:marca, :modelo);";
         $stmt = $this->con->con()->prepare($sql);
         $rst = $stmt->execute([
+            ':marca' => $marca,
             ':modelo' => $modelo
         ]);
+
         if (!$rst) {
             return [
                 'title' => 'error',
@@ -48,5 +53,14 @@ class Modelo
         $sql = "SELECT id_mod, modelo FROM modelo";
         $rst = $this->con->con()->query($sql)->fetchAll();
         return $rst;
+    }
+
+    public function listarModeloById(int $id = 0){
+        if ($id != 0) {
+            $sql = "SELECT id_mod, modelo FROM modelo WHERE id_mar = :id";
+            $stmt = $this->con->con()->prepare($sql);
+            $stmt->execute([':id' => $id]);
+            return $stmt->fetchAll();
+        }
     }
 }

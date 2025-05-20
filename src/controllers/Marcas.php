@@ -1,5 +1,8 @@
 <?php
 
+namespace Jeremias\StockRepuestosZoom\controllers;
+use Jeremias\StockRepuestosZoom\models\Main;
+
 class Marcas
 {
     private Main $con;

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 14-05-2025 a las 21:12:01
+-- Tiempo de generación: 21-05-2025 a las 00:11:35
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -32,6 +32,20 @@ CREATE TABLE `marca` (
   `marca` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `marca`
+--
+
+INSERT INTO `marca` (`id_mar`, `marca`) VALUES
+(1, 'Samsung'),
+(2, 'Motorola'),
+(3, 'Redmi'),
+(4, 'Xiaomi'),
+(5, 'Huawei'),
+(6, 'POCO'),
+(9, 'Nokia'),
+(10, 'Nokia');
+
 -- --------------------------------------------------------
 
 --
@@ -40,33 +54,18 @@ CREATE TABLE `marca` (
 
 CREATE TABLE `modelo` (
   `id_mod` int(11) NOT NULL,
+  `id_mar` int(11) DEFAULT NULL,
   `modelo` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- --------------------------------------------------------
-
 --
--- Estructura de tabla para la tabla `repuesto`
+-- Volcado de datos para la tabla `modelo`
 --
 
-CREATE TABLE `repuesto` (
-  `id_rep` int(11) NOT NULL,
-  `id_mar` int(11) DEFAULT NULL,
-  `id_mod` int(11) DEFAULT NULL,
-  `descripción` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `stock`
---
-
-CREATE TABLE `stock` (
-  `id` int(11) NOT NULL,
-  `id_rep` int(11) DEFAULT NULL,
-  `stock` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+INSERT INTO `modelo` (`id_mod`, `id_mar`, `modelo`) VALUES
+(1, 1, 'A03'),
+(2, 2, 'G20'),
+(3, 1, 'A52');
 
 --
 -- Índices para tablas volcadas
@@ -82,22 +81,8 @@ ALTER TABLE `marca`
 -- Indices de la tabla `modelo`
 --
 ALTER TABLE `modelo`
-  ADD PRIMARY KEY (`id_mod`);
-
---
--- Indices de la tabla `repuesto`
---
-ALTER TABLE `repuesto`
-  ADD PRIMARY KEY (`id_rep`),
-  ADD KEY `id_mar` (`id_mar`),
-  ADD KEY `id_mod` (`id_mod`);
-
---
--- Indices de la tabla `stock`
---
-ALTER TABLE `stock`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id_rep` (`id_rep`);
+  ADD PRIMARY KEY (`id_mod`),
+  ADD KEY `id_mar` (`id_mar`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -107,42 +92,23 @@ ALTER TABLE `stock`
 -- AUTO_INCREMENT de la tabla `marca`
 --
 ALTER TABLE `marca`
-  MODIFY `id_mar` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_mar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `modelo`
 --
 ALTER TABLE `modelo`
-  MODIFY `id_mod` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `repuesto`
---
-ALTER TABLE `repuesto`
-  MODIFY `id_rep` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `stock`
---
-ALTER TABLE `stock`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_mod` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Restricciones para tablas volcadas
 --
 
 --
--- Filtros para la tabla `repuesto`
+-- Filtros para la tabla `modelo`
 --
-ALTER TABLE `repuesto`
-  ADD CONSTRAINT `repuesto_ibfk_1` FOREIGN KEY (`id_mar`) REFERENCES `marca` (`id_mar`),
-  ADD CONSTRAINT `repuesto_ibfk_2` FOREIGN KEY (`id_mod`) REFERENCES `modelo` (`id_mod`);
-
---
--- Filtros para la tabla `stock`
---
-ALTER TABLE `stock`
-  ADD CONSTRAINT `stock_ibfk_1` FOREIGN KEY (`id_rep`) REFERENCES `repuesto` (`id_rep`);
+ALTER TABLE `modelo`
+  ADD CONSTRAINT `modelo_ibfk_1` FOREIGN KEY (`id_mar`) REFERENCES `marca` (`id_mar`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

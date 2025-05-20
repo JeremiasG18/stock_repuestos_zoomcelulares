@@ -1,7 +1,8 @@
 <?php
 
-require '../models/Main.php';
-require '../controllers/Marcas.php';
+require_once '../../vendor/autoload.php';
+use Jeremias\StockRepuestosZoom\models\Main;
+use Jeremias\StockRepuestosZoom\controllers\Marcas;
 
 $con = new Main();
 $marca = new Marcas($con);

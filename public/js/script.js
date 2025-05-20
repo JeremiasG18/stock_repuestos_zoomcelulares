@@ -28,6 +28,13 @@ function listar(url, binfo, funcion){
     body.append(
         binfo.accion, binfo.clase
     );
+
+    if (binfo.id != '') {
+        body.append(
+            'id', binfo.id
+        );
+    }
+
     fetch(url, {
         method: 'POST',
         body: body
@@ -36,6 +43,31 @@ function listar(url, binfo, funcion){
     .then(data => {
         funcion(data);
     })
+}
+
+function selectDatos(data){
+    let select;
+    
+    if (data[0].marca) {
+        select = document.querySelector('.selectMarcas');
+    }else{
+        select = document.querySelector('.selectModelos');
+    }
+
+    for (let i = 0; i < data.length; i++) {
+        const option = document.createElement('option');
+        for (let key in data[i]) {
+            if (key == 'marca') {
+                option.value = data[i].id_mar;
+                option.innerText = data[i].marca;
+            }else if (key == 'modelo') {
+                option.value = data[i].id_mod;
+                option.innerText = data[i].modelo;
+            }            
+        }        
+        select.appendChild(option);
+    }
+    return select;
 }
 
 const formulario = document.querySelectorAll('.form');
@@ -57,12 +89,38 @@ formulario.forEach((form) =>{
                 form.reset();
             }
             
-            if (window.location.href == 'http://localhost/stock_repuestos_zoomcelulares/?view=modelos') {
-                mostrarModelos();
+            if (window.location.href == 'http://localhost/stock_repuestos_zoomcelulares/?view=marcas') {
+                const url = 'http://localhost/stock_repuestos_zoomcelulares/src/ajax/ajax_marca.php';
+                const binfo = {
+                    accion: 'buscar',
+                    clase: 'marca'
+                }
+                listar(url, binfo, mostrarDatos)
             }
 
-            if (window.location.href == 'http://localhost/stock_repuestos_zoomcelulares/?view=marcas') {
-                mostrarMarcas();
+            if (window.location.href == 'http://localhost/stock_repuestos_zoomcelulares/?view=modelos') {
+                const url = 'http://localhost/stock_repuestos_zoomcelulares/src/ajax/ajax_modelo.php';
+                const binfo = {
+                    accion: 'buscar',
+                    clase: 'modelo'
+                }
+                listar(url, binfo, mostrarDatos);
+            }
+
+            if (window.location.href == 'http://localhost/stock_repuestos_zoomcelulares/?view=repuestos') {
+                const url = 'http://localhost/stock_repuestos_zoomcelulares/src/ajax/ajax_marca.php';
+                const binfo = {
+                    accion: 'buscar',
+                    clase: 'marca'
+                }
+                listar(url, binfo, selectDatos)
+
+                const url2 = 'http://localhost/stock_repuestos_zoomcelulares/src/ajax/ajax_modelo.php';
+                const binfo2 = {
+                    accion: 'buscar',
+                    clase: 'modelo'
+                }
+                listar(url2, binfo2, selectDatos);
             }
         })
         .catch(error => {
@@ -101,10 +159,45 @@ if (window.location.href == 'http://localhost/stock_repuestos_zoomcelulares/?vie
 }
 
 if (window.location.href == 'http://localhost/stock_repuestos_zoomcelulares/?view=modelos') {
-    const url = 'http://localhost/stock_repuestos_zoomcelulares/src/ajax/ajax_modelo.php';
+    const url = 'http://localhost/stock_repuestos_zoomcelulares/src/ajax/ajax_marca.php';
     const binfo = {
+        accion: 'buscar',
+        clase: 'marca'
+    }
+    listar(url, binfo, selectDatos)
+
+    const url2 = 'http://localhost/stock_repuestos_zoomcelulares/src/ajax/ajax_modelo.php';
+    const binfo2 = {
         accion: 'buscar',
         clase: 'modelo'
     }
-    listar(url, binfo, mostrarDatos);
+    listar(url2, binfo2, mostrarDatos);
+}
+
+if (window.location.href == 'http://localhost/stock_repuestos_zoomcelulares/?view=repuestos') {
+    const url = 'http://localhost/stock_repuestos_zoomcelulares/src/ajax/ajax_marca.php';
+    const binfo = {
+        accion: 'buscar',
+        clase: 'marca'
+    };
+    listar(url, binfo, selectDatos);
+
+    const selectMarcas = document.querySelector('.selectMarcas');
+    selectMarcas.addEventListener('change', (e) => {
+        const id = e.target.value;
+        const url = 'http://localhost/stock_repuestos_zoomcelulares/src/ajax/ajax_modelo.php';
+        const binfo = {
+            accion: 'buscar_por_id',
+            clase: 'modelo',
+            id: id
+        }
+        listar(url, binfo, selectDatos);
+    });
+
+    // const url2 = 'http://localhost/stock_repuestos_zoomcelulares/src/ajax/ajax_modelo.php';
+    // const binfo2 = {
+    //     accion: 'buscar',
+    //     clase: 'modelo'
+    // };
+    // listar(url2, binfo2, selectDatos);
 }

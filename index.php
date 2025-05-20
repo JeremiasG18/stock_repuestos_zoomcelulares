@@ -13,5 +13,4 @@ if (is_file("src/views/{$_GET['view']}.php")){
 
 require 'public/templates/footer.php';
 
-
 ?>

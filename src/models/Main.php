@@ -1,5 +1,8 @@
 <?php
 
+namespace Jeremias\StockRepuestosZoom\models;
+use PDO;
+
 class Main{
     private string $host;
     private string $user;

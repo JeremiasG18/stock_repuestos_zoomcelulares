@@ -3,6 +3,10 @@
         <h2>Crear Modelo</h2>
         <form action="src/ajax/ajax_modelo.php" method="post" class="form">
             <input type="hidden" name="guardar" value="modelo">
+            <label for="marca">Marca</label>
+            <select name="marca" id="marca" class="selectMarcas">
+                <option value="0">Seleccione la marca del modelo</option>
+            </select>
             <label for="modelo">Modelo</label>
             <input type="text" name="modelo" placeholder="Ingrese el modelo de la marca" id="modelo">
             <input type="submit" value="Guardar Modelo">
