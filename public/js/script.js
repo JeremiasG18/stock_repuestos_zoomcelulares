@@ -47,13 +47,16 @@ function listar(url, binfo, funcion){
 
 function selectDatos(data){
     let select;
-    
+    let option;
     if (data[0].marca) {
         select = document.querySelector('.selectMarcas');
+        option = '<option value="0">Seleccione una Marca</option>'
     }else{
         select = document.querySelector('.selectModelos');
+        option = '<option value="0">Seleccione un Modelo</option>'
     }
-
+    select.innerHTML = '';
+    select.innerHTML = option;
     for (let i = 0; i < data.length; i++) {
         const option = document.createElement('option');
         for (let key in data[i]) {
@@ -114,14 +117,16 @@ formulario.forEach((form) =>{
                     clase: 'marca'
                 }
                 listar(url, binfo, selectDatos)
-
-                const url2 = 'http://localhost/stock_repuestos_zoomcelulares/src/ajax/ajax_modelo.php';
-                const binfo2 = {
-                    accion: 'buscar',
-                    clase: 'modelo'
-                }
-                listar(url2, binfo2, selectDatos);
+                listar(
+                    'http://localhost/stock_repuestos_zoomcelulares/src/ajax/ajax_repuesto.php',
+                    {
+                        accion: 'buscar',
+                        clase: 'repuesto'
+                    },
+                    mostrarDate
+                )
             }
+
         })
         .catch(error => {
             console.error('Error en la solicitud:', error);
@@ -193,14 +198,27 @@ if (window.location.href == 'http://localhost/stock_repuestos_zoomcelulares/?vie
             id: id
         }
         selectModelos.removeAttribute('disabled');
-        selectModelos.innerHTML = '<option value="0">Seleccione un modelo</option>';
+        selectModelos.innerHTML = '<option value="0">Seleccione un Modelo</option>';
         listar(url, binfo, selectDatos);
     });
 
-    // const url2 = 'http://localhost/stock_repuestos_zoomcelulares/src/ajax/ajax_modelo.php';
-    // const binfo2 = {
-    //     accion: 'buscar',
-    //     clase: 'modelo'
-    // };
-    // listar(url2, binfo2, selectDatos);
+    listar(
+        'http://localhost/stock_repuestos_zoomcelulares/src/ajax/ajax_repuesto.php',
+        {
+            accion: 'buscar',
+            clase: 'repuesto'
+        },
+        mostrarDate
+    )
+}
+
+function mostrarDate(data){
+    const contenedor = document.querySelector('.contenedor');
+    contenedor.innerHTML = '';
+    for (let i = 0; i < data.length; i++) {
+        const p = document.createElement('p');
+        p.innerText = `Marca: ${data[i].marca} - Modelo: ${data[i].modelo} - Repuesto: ${data[i].repuesto} - Stock: ${data[i].stock}`;
+        contenedor.appendChild(p);
+    }
+    return contenedor;
 }

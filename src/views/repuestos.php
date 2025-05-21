@@ -5,11 +5,11 @@
             <input type="hidden" name="guardar" value="repuesto">
             <label for="marca">Marca</label>
             <select name="marca" id="marca" class="selectMarcas">
-                <option value="0">Seleccione una marca</option>
+                <option value="0">Seleccione una Marca</option>
             </select>
             <label for="modelo">Modelo</label>
             <select name="modelo" id="modelo" class="selectModelos">
-                <option value="0">Seleccione un modelo</option>
+                <option value="0">Seleccione un Modelo</option>
             </select>
             <label for="repuesto">Repuesto</label>
             <input type="text" name="repuesto" id="repuesto" placeholder="Ingrese el nombre del repuesto">
@@ -27,7 +27,7 @@
             <input type="text" name="repuesto" placeholder="Ingrese el nombre del repuesto" id="repuesto">
             <input type="submit" value="Buscar">
         </form>
-        <div class="content">
+        <div class="contenedor">
             
         </div>
     </section>
