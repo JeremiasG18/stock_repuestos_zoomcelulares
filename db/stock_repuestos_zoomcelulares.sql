@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 21-05-2025 a las 00:11:35
+-- Tiempo de generación: 21-05-2025 a las 18:30:03
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -65,7 +65,8 @@ CREATE TABLE `modelo` (
 INSERT INTO `modelo` (`id_mod`, `id_mar`, `modelo`) VALUES
 (1, 1, 'A03'),
 (2, 2, 'G20'),
-(3, 1, 'A52');
+(3, 1, 'A52'),
+(4, 1, 'A01');
 
 --
 -- Índices para tablas volcadas
@@ -98,7 +99,7 @@ ALTER TABLE `marca`
 -- AUTO_INCREMENT de la tabla `modelo`
 --
 ALTER TABLE `modelo`
-  MODIFY `id_mod` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_mod` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Restricciones para tablas volcadas
