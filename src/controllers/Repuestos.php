@@ -42,4 +42,6 @@ class Repuestos
             'message' => 'Se ha guardado los datos del repuesto correctamente'
         ];
     }
+
+    
 }

@@ -148,7 +148,6 @@ buscador.forEach(fmBuscador =>{
     });
 });
 
-
 if (window.location.href == 'http://localhost/stock_repuestos_zoomcelulares/?view=marcas') {
     const url = 'http://localhost/stock_repuestos_zoomcelulares/src/ajax/ajax_marca.php';
     const binfo = {
@@ -183,6 +182,8 @@ if (window.location.href == 'http://localhost/stock_repuestos_zoomcelulares/?vie
     listar(url, binfo, selectDatos);
 
     const selectMarcas = document.querySelector('.selectMarcas');
+    const selectModelos = document.querySelector('.selectModelos');
+    selectModelos.setAttribute('disabled', 'disabled');
     selectMarcas.addEventListener('change', (e) => {
         const id = e.target.value;
         const url = 'http://localhost/stock_repuestos_zoomcelulares/src/ajax/ajax_modelo.php';
@@ -191,6 +192,8 @@ if (window.location.href == 'http://localhost/stock_repuestos_zoomcelulares/?vie
             clase: 'modelo',
             id: id
         }
+        selectModelos.removeAttribute('disabled');
+        selectModelos.innerHTML = '<option value="0">Seleccione un modelo</option>';
         listar(url, binfo, selectDatos);
     });
 
