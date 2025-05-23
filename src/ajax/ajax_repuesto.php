@@ -26,6 +26,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit;
     }
 
+    if (isset($_POST['eliminar']) && $_POST['eliminar'] == 'repuesto') {
+        $vRepuesto = !empty($_POST['id_repuesto']) ? $_POST['id_repuesto'] : 0;
+        $rts = $repuesto->eliminarRepuesto($vRepuesto);
+        echo json_encode($rts);
+    }
+
 }
 
 

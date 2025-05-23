@@ -57,5 +57,29 @@ class Repuestos
         return $rst;
     }
 
+    public function eliminarRepuesto(int $id_repuesto = 0)
+    {
+        if ($id_repuesto == 0){
+            return [
+                'title' => 'error',
+                'message' => 'No se ha ingresado el id del repuesto'
+            ];
+        }
+
+        $sql = "DELETE FROM repuesto WHERE id = :id_repuesto";
+        $stmt = $this->con->con()->prepare($sql);
+        $rst = $stmt->execute([':id_repuesto' => $id_repuesto]);
+        if (!$rst){
+            return [
+                'title' => 'error',
+                'message' => 'No se ha podido eliminar el repuesto por favor intente nuevamente'
+            ];
+        }
+
+        return [
+            'title' => 'success',
+            'message' => 'Se ha eliminado el repuesto correctamente'
+        ];
+    }
     
 }
