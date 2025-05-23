@@ -153,38 +153,58 @@ buscador.forEach(fmBuscador =>{
     });
 });
 
-if (window.location.href == 'http://localhost/stock_repuestos_zoomcelulares/?view=marcas') {
-    const url = 'http://localhost/stock_repuestos_zoomcelulares/src/ajax/ajax_marca.php';
-    const binfo = {
-        accion: 'buscar',
-        clase: 'marca'
-    }
-    listar(url, binfo, mostrarDatos)
+let url = window.location.href;
+
+if (url.includes('/?view=marcas')) {
+    listar(
+        'http://localhost/stock_repuestos_zoomcelulares/src/ajax/ajax_marca.php',
+        {
+            accion: 'buscar',
+            clase: 'marca'
+        },
+        mostrarDatos
+    );
 }
 
-if (window.location.href == 'http://localhost/stock_repuestos_zoomcelulares/?view=modelos') {
-    const url = 'http://localhost/stock_repuestos_zoomcelulares/src/ajax/ajax_marca.php';
-    const binfo = {
-        accion: 'buscar',
-        clase: 'marca'
-    }
-    listar(url, binfo, selectDatos)
+if (url.includes('/?view=modelos')) {    
+    listar(
+        'http://localhost/stock_repuestos_zoomcelulares/src/ajax/ajax_marca.php',
+        {
+            accion: 'buscar',
+            clase: 'marca'
+        },
+        selectDatos
+    );
 
-    const url2 = 'http://localhost/stock_repuestos_zoomcelulares/src/ajax/ajax_modelo.php';
-    const binfo2 = {
-        accion: 'buscar',
-        clase: 'modelo'
-    }
-    listar(url2, binfo2, mostrarDatos);
+    listar(
+        'http://localhost/stock_repuestos_zoomcelulares/src/ajax/ajax_modelo.php',
+        {
+            accion: 'buscar',
+            clase: 'modelo'
+        }, 
+        mostrarDatos
+    );
 }
 
-if (window.location.href == 'http://localhost/stock_repuestos_zoomcelulares/?view=repuestos') {
-    const url = 'http://localhost/stock_repuestos_zoomcelulares/src/ajax/ajax_marca.php';
-    const binfo = {
-        accion: 'buscar',
-        clase: 'marca'
-    };
-    listar(url, binfo, selectDatos);
+
+if (url.includes('/?view=repuestos') || url == 'http://localhost/stock_repuestos_zoomcelulares/') {
+    listar(
+        'http://localhost/stock_repuestos_zoomcelulares/src/ajax/ajax_marca.php',
+        {
+            accion: 'buscar',
+            clase: 'marca'
+        },
+        selectDatos
+    );
+
+    listar(
+        'http://localhost/stock_repuestos_zoomcelulares/src/ajax/ajax_repuesto.php',
+        {
+            accion: 'buscar',
+            clase: 'repuesto'
+        },
+        mostrarDate
+    );
 
     const selectMarcas = document.querySelector('.selectMarcas');
     const selectModelos = document.querySelector('.selectModelos');
@@ -201,15 +221,6 @@ if (window.location.href == 'http://localhost/stock_repuestos_zoomcelulares/?vie
         selectModelos.innerHTML = '<option value="0">Seleccione un Modelo</option>';
         listar(url, binfo, selectDatos);
     });
-
-    listar(
-        'http://localhost/stock_repuestos_zoomcelulares/src/ajax/ajax_repuesto.php',
-        {
-            accion: 'buscar',
-            clase: 'repuesto'
-        },
-        mostrarDate
-    )
 }
 
 function mostrarDate(data){
@@ -219,6 +230,47 @@ function mostrarDate(data){
         const p = document.createElement('p');
         p.innerText = `Marca: ${data[i].marca} - Modelo: ${data[i].modelo} - Repuesto: ${data[i].repuesto} - Stock: ${data[i].stock}`;
         contenedor.appendChild(p);
+        const btnEliminar = document.createElement('button');
+        btnEliminar.setAttribute('data-id', data[i].id);
+        btnEliminar.setAttribute('class', 'btnEliminar');
+        btnEliminar.textContent = 'Eliminar'
+        btnEliminar.addEventListener('click', ()=>{
+            eliminar(
+                'http://localhost/stock_repuestos_zoomcelulares/src/ajax/ajax_repuesto.php',
+                {
+                    accion: 'eliminar',
+                    clase: 'repuesto',
+                    campo: 'id_repuesto',
+                    id: btnEliminar.getAttribute('data-id')
+                }
+            )
+            
+        })
+        contenedor.appendChild(btnEliminar);
     }
     return contenedor;
+}
+
+function eliminar(url, info){
+    let formData = new FormData;
+    formData.append(
+        info.accion,
+        info.clase
+    );
+    formData.append(
+        info.campo,
+        info.id
+    );
+    fetch(url,{
+            method: 'POST',
+            body: formData,
+        }
+    )
+    .then(response => response.json())
+    .then(data =>{
+        console.log(data);
+    })
+    .catch(error =>{
+        console.error('Ocurrio un error en el servidor: ' + error);
+    })
 }
